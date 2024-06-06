@@ -10,6 +10,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _controller = TextEditingController();
+
   List todoList = [
     ["Make Tutorial", false],
     ["Do Exercise", true],
@@ -21,11 +23,23 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void savaNewTask() {
+    setState(() {
+      todoList.add([_controller.text, false]);
+      _controller.clear();
+    });
+    Navigator.of(context).pop();
+  }
+
   void createNewTask() {
     showDialog(
       context: context,
       builder: (context) {
-        return DialogBox();
+        return DialogBox(
+          controller: _controller,
+          onSave: savaNewTask,
+          onCancel: () => Navigator.of(context).pop(),
+        );
       },
     );
   }
